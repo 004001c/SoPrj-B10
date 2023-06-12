@@ -1,6 +1,8 @@
 #ifndef types_h
 #define types_h
 
+#include <stdint.h>
+
 typedef struct _product {
     char name[16]; // 상품 명, 15 글자 + \0
     int64_t price; // 가격

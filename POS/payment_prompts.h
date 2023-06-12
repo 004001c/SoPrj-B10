@@ -23,4 +23,5 @@ void end_purchase(int table);
 // 오류 발생시 오류 코드를 반환
 int partial_pay(int table, char *string);
 
+void uncombine_Table(int table_num);
 #endif

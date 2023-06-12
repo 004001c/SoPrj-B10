@@ -19,4 +19,6 @@ void process_payment(int table_num);
 
 int is_empty_table(int table_num);
 
+void combine_Table(int table_num);
+
 #endif

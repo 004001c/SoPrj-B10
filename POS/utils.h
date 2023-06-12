@@ -41,4 +41,6 @@ int checkDate(char date_input[]);
 // 프로그램 위치 불러오기
 void get_current_dir(char *from, char *at);
 
+void* safe_realloc_trim(void *p, size_t n);
+
 #endif

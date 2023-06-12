@@ -10,6 +10,7 @@
 
 extern Table *tables; // 테이블
 extern Product_Array all_products; // 모든 상품들의 목록을 포함한 구조체
+extern int table_amount;
 extern int date;
 
 void process_payment(int table) {
@@ -245,6 +246,7 @@ void calculate_ratio(int tablenum, int number_of_people, int ratio[], int pay_in
 // 테이블에 있는 "전체" 상품 결제 완료 후
 // 테이블 주문내역 초기화
 // 전체 리스트에 결제된 수량 더해주기
+// + 합쳐진 테이블 있는지 돌고 병합 해제
 void end_purchase(int tablenum) {
     Table *table = &tables[tablenum - 1];
     // 전체 리스트에 결제된 수량 더하기
@@ -259,6 +261,9 @@ void end_purchase(int tablenum) {
     //        }
     //    }
     //}
+    
+    // 테이블 병합 해제
+    uncombine_Table(tablenum);
 
     // 테이블 주문내역 초기화
     free(table->products);
@@ -400,19 +405,54 @@ int partial_pay(int table_num, char* input) {
 
     int total_price = 0; // 결제하려는 토탈 금액
 
+    Table* table = &tables[table_num - 1];
+
     for (int i = 0; i < arr_size; i++) {
         int index = index_table[i];
         tables[table_num - 1].products[index].amount -= numbers[i]; // 테이블에 존제하는 갯수 감소
 
-        int ap_index = -1;
-        for (int j = 0; j < all_products.length; j++) {
-            if (strcmp(all_products.products[j].name, tables[table_num - 1].products[index].name) == 0) {
-                ap_index = j;
-                break;
+//        int ap_index = -1;
+//        for (int j = 0; j < all_products.length; j++) {
+//            if (strcmp(all_products.products[j].name, tables[table_num - 1].products[index].name) == 0) {
+//                ap_index = j;
+//                break;
+//            }
+//        }
+//        all_products.products[ap_index].amount += numbers[i]; // 정산을 위해 판매 내역에 더하기
+        total_price += numbers[i] * tables[table_num - 1].products[index].price;
+        
+        // 개수가 0이 되면 배열 당기기
+        if (table->products[index].amount == 0) { //상품이 0개가 되면 realloc 후 땡김
+            int64_t updateLength = table->length - 1; //새로운 realloc 크기
+
+            for (int64_t i = index; i < updateLength; i++) { //앞으로 한칸씩 땡김
+                table->products[i].amount = table->products[i + 1].amount;
+                table->products[i].price = table->products[i + 1].price;
+                strcpy(table->products[i].name, table->products[i + 1].name);
             }
+
+            table->products = safe_realloc_trim(table->products, updateLength * sizeof(Product));
+//            void* realloced = realloc(table->products, updateLength * sizeof(Product));
+//            if (realloced == NULL) {
+//                printf("오류 : 메모리 문제로 취소에 실패하였습니다. 이전 메뉴로 돌아갑니다.\n");
+//                return;
+//            }
+//            else {
+//                table->products = realloced;
+//            }
+            table->length--;
         }
-        all_products.products[ap_index].amount += numbers[i]; // 정산을 위해 판매 내역에 더하기
-        total_price += numbers[i] * all_products.products[ap_index].price;
+    }
+    
+    int purchase_end = 1;
+    for (int i = 0; i < table->length && purchase_end == 1; i++) {
+        if (table->products[i].amount != 0) {
+            purchase_end = 0;
+        }
+    }
+    
+    if (purchase_end == 1) {
+        end_purchase(table_num);
     }
     
     // 작업이 끝났으니 malloc 한 항목들 free
@@ -428,4 +468,13 @@ int partial_pay(int table_num, char* input) {
     printf("총 결제 금액 : %d\n", total_price);
     
     return total_price;
+}
+
+void uncombine_Table(int table_num) {
+    for (int i = 0; i < table_amount; i++) { //전체 테이블 for loop 돌면서
+        if (tables[i].delegate == table_num && tables[i].status == kCombined) { // 대표테이블이 현재 테이블과 같다면
+            tables[i].delegate = -1;
+            tables[i].status = kOrdinary;
+        }
+    }
 }

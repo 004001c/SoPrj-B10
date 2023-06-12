@@ -38,6 +38,7 @@ int command_prompt_b(int max, int back) {
     if (2 <= max) printf("2 two\t|\t선택지의 2번 메뉴로 갑니다.\n");
     if (3 <= max) printf("3 three\t|\t선택지의 3번 메뉴로 갑니다.\n");
     if (4 <= max) printf("4 four\t|\t선택지의 4번 메뉴로 갑니다.\n");
+    if (5 <= max) printf("5 fice\t|\t선택지의 5번 메뉴로 갑니다.\n");
     if (back == 1) printf("0 back\t|\t이전 메뉴로 돌아갑니다.\n");
     printf("-----------------+-------------------------------------+----------------------------------\n");
 

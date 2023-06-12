@@ -1,7 +1,7 @@
 add_library(
 	core
 	STATIC
-	add_product_prompts.h
+	product_management_prompts.c
 	login.h
 	main_prompts.h
 	payment_prompts.h
@@ -12,9 +12,9 @@ add_library(
 	settlement_prompts.h
 	types.h
 	utils.h
-    common_prompts.h
-    table_amount_prompt.h
-	add_product_prompts.c
+	common_prompts.h
+	table_amount_prompt.h
+	product_management_prompts.h
 	login.c
 	pos_main.c
 	main_prompts.c
@@ -24,8 +24,8 @@ add_library(
 	settlement.c
 	settlement_prompts.c
 	utils.c
-    common_prompts.c
-    table_amount_prompt.c
+	common_prompts.c
+	table_amount_prompt.c
 )
 
 target_include_directories(core INTERFACE ${CMAKE_CURRENT_LIST_DIR})

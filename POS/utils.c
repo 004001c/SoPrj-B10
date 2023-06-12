@@ -117,15 +117,16 @@ void remove_all_space(char* string) {
 
 
 int is_correct_command(char *string) {
-    char command_list[10][6] = {
+    char command_list[12][6] = {
         "0", "back",
         "1", "one",
         "2", "two",
         "3", "three",
         "4", "four",
+        "5", "five",
     };
     int flag = -1;
-    for (int i = 0; i < 10 && flag == -1; i++) {
+    for (int i = 0; i < 12 && flag == -1; i++) {
         if(strcmp(command_list[i], string) == 0) {
             if (i % 2 != 0) {
                 return (i - 1) / 2;
@@ -240,4 +241,9 @@ void get_current_dir(char *from, char *at) {
     }
     strncpy(at, from, last + 1);
     sprintf(at, "%s%s%c", at, "posdata", divider);
+}
+
+void* safe_realloc_trim(void *p, size_t n) {
+    void *p2 = realloc(p, n);
+    return p2 ? p2 : p;
 }

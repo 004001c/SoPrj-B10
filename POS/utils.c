@@ -244,6 +244,11 @@ void get_current_dir(char *from, char *at) {
 }
 
 void* safe_realloc_trim(void *p, size_t n) {
-    void *p2 = realloc(p, n);
-    return p2 ? p2 : p;
+    if (n == 0) {
+        free(p);
+        return NULL;
+    } else {
+        void *p2 = realloc(p, n);
+        return p2 ? p2 : p;
+    }
 }

@@ -23,7 +23,7 @@ void sell_prompt() {
 
     while (1) {
         table_num =-1;
-        printf("<테이블 리스트>\n");
+        printf("<가능한 테이블 목록>\n");
         for (int i = 1; i <= table_amount; i++) {
             if (tables[i - 1].status == kCombined) continue;
             printf("\t%d. %d번 테이블\n", i, i);
@@ -94,7 +94,16 @@ void table_management_prompt(int table_num) {
                 process_payment(table_num);
             }
         } else if (ret == 5) {
-            combine_Table(table_num);
+            int possible_combine = 0;
+            for (int i = 0; i < table_amount && possible_combine == 0; i++) {
+                if (i == table_num - 1) continue;
+                if (tables[i].status == kOrdinary) possible_combine = 1;
+            }
+            if (possible_combine == 1) {
+                combine_Table(table_num);
+            } else {
+                printf("오류 : 합칠 수 있는 테이블이 없습니다.\n");
+            }
         }
     }
 }
@@ -187,7 +196,7 @@ void order_product(int table_num) {
             printf("오류 : 개수의 첫글자가 0입니다. 개수는 0으로 시작할 수 없습니다.\n");
         }
         else if (temp_amount == -5) {
-            printf("오류 : 개수는 1이상 20이하의 숫자여야 합니다.");
+            printf("오류 : 개수는 1이상 20이하의 숫자여야 합니다.\n");
         }
         else 
             break;
@@ -392,7 +401,7 @@ void combine_Table(int table_num) {
             printf("\t1. 테이블 합치기\n");
             printf("\t0. 돌아가기\n");
             printf("POS / (테이블 합치기) - 번호 선택 > ");
-            int ret = command_prompt(2);
+            int ret = command_prompt(1);
             if (ret == 0) {
                 return;
             } else if (ret == 1) {
@@ -434,7 +443,7 @@ void combine_Table(int table_num) {
             printf("\t1. 합치기\n");
             printf("\t0. 돌아가기\n");
             printf("POS / (테이블 합치기) - 번호 선택 > ");
-            int ret = command_prompt(2);
+            int ret = command_prompt(1);
             if (ret == 0) {
                 return;
             } else if (ret == 1) {
@@ -484,13 +493,22 @@ void combine_Table(int table_num) {
         currunt_T->status = kDelegate;
         selected_T->status = kCombined;
         selected_T->delegate = selected_table;
+        
+        int possible_combine = 0;
+        for (int i = 0; i < table_amount && possible_combine == 0; i++) {
+            if (i == table_num - 1) continue;
+            if (tables[i].status == kOrdinary) possible_combine = 1;
+        }
+        if (possible_combine == 0) {
+            return;
+        }
 
         while (1) {
             printf("계속하시겠습니까?\n");
             printf("\t1. 계속하기\n");
             printf("\t0. 그만두기\n");
             printf("POS / (테이블 합치기) - 번호 선택 > ");
-            int ret = command_prompt(2);
+            int ret = command_prompt(1);
             if (ret == 0) {
                 return;
             } else if (ret == 1) {

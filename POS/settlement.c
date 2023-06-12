@@ -34,7 +34,7 @@ int save_settlement() {
         for (int i = 0; i < all_products.length; i++) {
             sum += all_products.products[i].price * all_products.products[i].amount;
         }
-        fprintf(fp, "%d\t%d\n", date, sum);
+        fprintf(fp, "%08d\t%d\n", date, sum);
         for (int i = 0; i < all_products.length; i++) {
             fprintf(fp, "%s\t%lld\t%lld\t%lld\n", all_products.products[i].name, all_products.products[i].price, all_products.products[i].amount, all_products.products[i].price * all_products.products[i].amount);
         }
@@ -78,7 +78,7 @@ void print_settlement(char date[]) {
                 putchar(c);
             }
             fclose(fp);
-            printf("%s의 정산내역을 출력하였습니다.\n", date);
+            printf("\n%s의 정산내역을 출력하였습니다.\n", date);
         }
         return;
     }
@@ -109,6 +109,7 @@ int read_settlement_file(char date_input[]) {
                 putchar(c);
             }
             putchar(c);
+            break;
     case -2:
             printf("오류 : 정산파일에 정산내역이 존재하지 않습니다.\n");
         return -1;

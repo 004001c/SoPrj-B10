@@ -72,7 +72,7 @@ void pay_all_at_once(int table_num) {
     end_purchase(table_num); // 결제 종료
     printf("결제가 완료되었습니다.\n");
     printf("결제 금액 : %d\n", order_price);
-    printf("결제 일시 : %d\n", date);
+    printf("결제 일시 : %8d\n", date);
 }
 
 void pay_with_ratio(int table_num) {
@@ -169,7 +169,7 @@ void pay_with_ratio(int table_num) {
     for (int i = 0; i < people_num; i++) {
         printf("%d/%d인 결제 금액 : %d\n", i + 1, people_num, result_arr[i]);
     }
-    printf("결제 일시 : %d\n", date);
+    printf("결제 일시 : %8d\n", date);
 }
 
 void pay_partially(int table_num) {
@@ -266,7 +266,9 @@ void end_purchase(int tablenum) {
     uncombine_Table(tablenum);
 
     // 테이블 주문내역 초기화
-    free(table->products);
+    if (table->products != NULL) {
+        free(table->products);
+    }
     table->length = 0;
 }
 

@@ -33,6 +33,7 @@ void pos_main(char* path) {
     
     // init tables
     for (int i = 0; i < table_amount; i++) {
+        tables[i].products = NULL;
         tables[i].length = 0;
         tables[i].status = kOrdinary;
         tables[i].delegate = -1;

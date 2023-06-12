@@ -16,6 +16,7 @@
 
 void settlement_prompt() {
     while (1) {
+        printf("<날짜별 정산>\n");
         printf("\t1. 특정 날짜 입력\n");
         printf("\t0. 돌아가기\n");
         printf("POS / 메인 메뉴 - 번호 선택 > ");

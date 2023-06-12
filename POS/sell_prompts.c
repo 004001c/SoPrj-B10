@@ -492,8 +492,16 @@ void combine_Table(int table_num) {
 
         currunt_T->status = kDelegate;
         selected_T->status = kCombined;
-        selected_T->delegate = selected_table;
-        
+        selected_T->delegate = table_num;
+
+        printf("현재 테이블과 합쳐진 테이블 목록:\n");
+        printf("\t%d번 테이블\n", table_num);
+        for (int i = 0; i < table_amount; i++) {
+            if (tables[i].status == kCombined && tables[i].delegate == table_num) {
+                printf("\t%d번 테이블\n", i + 1);
+            }
+        }
+
         int possible_combine = 0;
         for (int i = 0; i < table_amount && possible_combine == 0; i++) {
             if (i == table_num - 1) continue;

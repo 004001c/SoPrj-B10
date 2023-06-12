@@ -70,12 +70,12 @@ void add_product_prompt(){
         
         while(1){
             printf("POS / 새 상품 추가\n");
+            printf("\t저장하시겠습니까?\n");
             printf("\t상품명: %s\n", name);
             printf("\t상품가격: %d\n", price);
             printf("\t1. 저장하기\n");
             printf("\t0. 돌아가기\n");
-            printf("\t저장하시겠습니까? > ");
-            
+            printf("POS / 새 상품 추가 - 번호 선택 > ");
             int ret = command_prompt(1);
             if (ret == 0) {
                 return;
@@ -143,7 +143,7 @@ void remove_product_prompt() {
 
         while (1) {
             printf("정말 삭제하시겠습니까?\n");
-            printf("\t상품명: %s\n", all_products.products[idx].name);
+            printf("상품명: %s\n", all_products.products[idx].name);
             printf("\t1. 삭제하기\n");
             printf("\t0. 돌아가기\n");
             printf("POS / 상품 삭제 - 번호선택 > ");
